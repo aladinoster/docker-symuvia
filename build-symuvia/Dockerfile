@@ -34,12 +34,12 @@ RUN apt-get update && apt-get install -y \
 
 # Build Cmake
 RUN git clone https://github.com/aladinoster/build-symuvia.git --depth=1 \
-    --branch master --single-branch home/build-symuvia
+    --branch master --single-branch home/symuvia
 
 # Source Files
-COPY SymuVia/ /home/build-symuvia/SymuVia/src/
+COPY SymuVia/ /home/symuvia/SymuVia/src/
 
-COPY SymuCore/ /home/build-symuvia/SymuCore/src/
+COPY SymuCore/ /home/symuvia/SymuCore/src/
 
 # Manual version of Xqilla
 RUN curl -SL https://sourceforge.net/projects/xqilla/files/XQilla-2.3.4.tar.gz/download -o XQilla-2.3.4.tar.gz  &&\
@@ -47,7 +47,7 @@ RUN curl -SL https://sourceforge.net/projects/xqilla/files/XQilla-2.3.4.tar.gz/d
     mv /home/XQilla-2.3.4/include/ /usr/local/
 
 # Setting home directory
-WORKDIR /home/build-symuvia
+WORKDIR /home/symuvia
 
 # Entry point
 ENV TINI_VERSION v0.16.1
@@ -59,6 +59,9 @@ CMD [ "/bin/bash" ]
 
 # Conda install
 RUN ["/bin/bash","-c","conda install -y -c conda-forge cmake"]
+
+# Install jupyter interface
+RUN ["/bin/bash","-c","conda install -c conda-forge jupyterlab"]
 
 # Compile Symuvia
 RUN mkdir -p build && cd build && \
