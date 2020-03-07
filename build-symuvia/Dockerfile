@@ -1,10 +1,14 @@
-FROM ubuntu:18.04
-LABEL maintainer="Andres Ladino <aladinoster@gmail.com>"
+FROM continuumio/miniconda3
 
-USER root
+# Set the ENTRYPOINT to use bash
+# (this is also where you’d set SHELL,
+# if your version of docker supports this)
+# ENTRYPOINT ["/bin/bash", "-c"]
 
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+# Open ports
+EXPOSE 5000
 
+# Libraries + Compiler
 RUN apt-get update && apt-get install -y \
     wget bzip2 ca-certificates \
     xz-utils \
@@ -17,7 +21,8 @@ RUN apt-get update && apt-get install -y \
     gdal-bin \
     rapidjson-dev \
     libgdal-dev \
-    unixodbc &&\
+    unixodbc \
+    libpq-dev &&\
     aptitude search -y \
     boost \
     && rm -rf /var/lib/apt/lists/* \
@@ -27,25 +32,35 @@ RUN apt-get update && apt-get install -y \
     echo 'export PATH=/clang_9.0.0/bin:$PATH' >> ~/.bashrc && \
     echo 'export LD_LIBRARY_PATH=/clang_9.0.0/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
 
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh && \
-    /opt/conda/bin/conda clean -tipsy && \
-    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
-    echo "conda activate base" >> ~/.bashrc
-
-ENV TINI_VERSION v0.16.1
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
-
-RUN chmod +x /usr/bin/tini
-
+# Build Cmake
 RUN git clone https://github.com/aladinoster/build-symuvia.git --depth=1 \
     --branch master --single-branch home/build-symuvia
 
-ADD SymuVia.tar.gz /home/build-symuvia/SymuVia/src/
+# Source Files
+COPY SymuVia/ /home/build-symuvia/SymuVia/src/
 
-ADD SymuCore.tar.gz /home/build-symuvia/SymuCore/src/
+COPY SymuCore/ /home/build-symuvia/SymuCore/src/
+
+# Manual version of Xqilla
+RUN curl -SL https://sourceforge.net/projects/xqilla/files/XQilla-2.3.4.tar.gz/download -o XQilla-2.3.4.tar.gz  &&\
+    tar -xzvf XQilla-2.3.4.tar.gz -C /home/ &&\
+    mv /home/XQilla-2.3.4/include/ /usr/local/
+
+# Setting home directory
+WORKDIR /home/build-symuvia
+
+# Entry point
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
 
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 CMD [ "/bin/bash" ]
+
+# Conda install
+RUN ["/bin/bash","-c","conda install -y -c conda-forge cmake"]
+
+# Compile Symuvia
+RUN mkdir -p build && cd build && \
+    cmake .. && \ 
+    cmake --build .
