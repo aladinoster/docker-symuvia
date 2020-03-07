@@ -27,3 +27,9 @@ Go inside `docker-symuvia/build-symuvia`
 ```
   docker run --rm -it local:symuvia
 ```
+
+Launch Jupyter lab via 
+
+```
+jupyter lab --notebook-dir=/home/ --ip='0.0.0.0' --port=8888 --no-browser --allow-root
+```
