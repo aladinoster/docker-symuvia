@@ -38,9 +38,9 @@ RUN git clone https://github.com/aladinoster/build-symuvia.git --depth=1 \
     --branch master --single-branch home/symuvia
 
 # Source Files
-COPY SymuVia/ /home/symuvia/SymuVia/src/
+COPY SymuVia/ /home/symuvia/symuvia/src/
 
-COPY SymuCore/ /home/symuvia/SymuCore/src/
+COPY SymuCore/ /home/symuvia/symucore/src/
 
 # Manual version of Xqilla
 RUN curl -SL https://sourceforge.net/projects/xqilla/files/XQilla-2.3.4.tar.gz/download -o XQilla-2.3.4.tar.gz  &&\
@@ -63,6 +63,8 @@ RUN ["/bin/bash","-c","conda install -y -c conda-forge cmake"]
 
 # Install jupyter interface
 RUN ["/bin/bash","-c","conda install -c conda-forge jupyterlab"]
+
+COPY config/ /home/symuvia/symuvia/config/
 
 # Compile Symuvia
 RUN mkdir -p build && cd build && \
