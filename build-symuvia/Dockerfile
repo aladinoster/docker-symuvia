@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \ 
     curl \   
     git \
-    xqilla \
+    nano \
+    libxqilla-dev \
     libboost-all-dev \
     aptitude \
     gdal-bin \
