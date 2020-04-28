@@ -70,3 +70,7 @@ COPY config/ /home/symuvia/symuvia/config/
 RUN mkdir -p build && cd build && \
     cmake .. && \ 
     cmake --build .
+
+# Source Files
+RUN rm -r /home/symuvia/symuvia && \
+    rm -r /home/symuvia/symucore
