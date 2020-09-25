@@ -25,7 +25,7 @@ Go inside `docker-symuvia/build-symuvia`
 ## Run 
 
 ```
-  docker run --rm -it local:symuvia
+  docker run --rm -it -p 8888:8888 local:symuvia
 ```
 
 Launch Jupyter lab via 
