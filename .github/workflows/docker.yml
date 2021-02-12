@@ -12,9 +12,11 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: licit-lab/docker-symuvia/symupy
+          name: licit-lab/docker-symuvia
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: Dockerfile
+          context: symupy
+          buildoptions: "--compress --force-rm"
           tags: latest
