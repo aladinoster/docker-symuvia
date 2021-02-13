@@ -19,4 +19,4 @@ jobs:
           dockerfile: symupy/Dockerfile
           context: symupy
           buildoptions: "--compress --force-rm"
-          tags: latest
+          tags: v1.0.0
