@@ -16,7 +16,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: Dockerfile
+          dockerfile: symupy/Dockerfile
           context: symupy
           buildoptions: "--compress --force-rm"
           tags: latest
