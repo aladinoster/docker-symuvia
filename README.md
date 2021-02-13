@@ -13,7 +13,7 @@ Get the executable container via:
 
 ## Build 
 
-Go inside `docker-symuvia/build-symuvia`
+Go inside `docker-symuvia/symupy`
 
 ```
  docker build --rm -f "Dockerfile" -t local:symuvia "." 
