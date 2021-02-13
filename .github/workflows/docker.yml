@@ -12,7 +12,7 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: licit-lab/docker-symuvia
+          name: licit-lab/docker-symuvia/symupy
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
