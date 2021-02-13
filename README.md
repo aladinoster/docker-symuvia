@@ -4,16 +4,16 @@ Containerized version of Symuvia.
 
 ## Obtain 
 
-Get the executable container via:
+Get the Docker file to create the container via:
 
 ```
-  git clone https://github.com/aladinoster/docker-symuvia.git
+  git clone https://github.com/licit-lab/docker-symuvia.git
 ```
 
 
 ## Build 
 
-Go inside `docker-symuvia/symupy`
+Go inside `docker-symuvia/symupy`. This container has inside a compiled version of the traffic simulator [symuvia](https://github.com/licit-lab/symudev) + a package to interact [symupy](https://symupy.readthedocs.io/en/stable/)
 
 ```
  docker build --rm -f "Dockerfile" -t local:symuvia "." 
@@ -23,6 +23,8 @@ Go inside `docker-symuvia/symupy`
 
 
 ## Run 
+
+Run the container in a terminal consol via
 
 ```
   docker run --rm -it -p 8888:8888 local:symuvia
