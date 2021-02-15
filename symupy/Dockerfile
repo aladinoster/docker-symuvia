@@ -13,4 +13,4 @@ RUN apk add --no-cache bash
 ENV PATH /opt/conda/bin/:$PATH
 
 # Install env
-RUN ["bash","-c","conda create -n symupy -c conda-forge -c licit-lab ipython symupy"]
+RUN ["bash","-c","conda create -n symupy -c conda-forge -c licit-lab jupyterlab symupy"]
