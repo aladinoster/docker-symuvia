@@ -1,22 +1,26 @@
-name: publish-container
+name: docker build
 
 on:
   push:
     branches:
       - master
+
 jobs:
-  build:
+  main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@master
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
         with:
-          name: licit-lab/docker-symuvia/symupy
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: symupy/Dockerfile
-          context: symupy
-          buildoptions: "--compress --force-rm"
-          tags: v1.0.0
+          context: .
+          file: ./symupy/Dockerfile
+          push: true
+          tags: user/app:v1.0.0
