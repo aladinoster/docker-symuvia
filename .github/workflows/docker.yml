@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           file: symupy/Dockerfile
-          push: false
+          push: true
           tags: user/app:v1.0.0
       - 
         name: Image digest
